@@ -1,4 +1,8 @@
-# fn-demo
+# nuxt-netlify-function-demo
+
+This is just a demo to see how Netlify functions work inside a Nuxt project.
+
+It uses the [Netlify CLI](https://www.netlify.com/products/dev/) to run the project.
 
 ## Build Setup
 
