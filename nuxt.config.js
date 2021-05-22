@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'fn-demo',
+    title: 'Clap Button Demo',
     htmlAttrs: {
       lang: 'en',
     },
@@ -44,7 +44,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: '/'
+    baseURL: '/',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
