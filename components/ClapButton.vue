@@ -6,23 +6,23 @@
       py-2
       px-4
       font-bold
-      text-white text-3xl
-      bg-green-500
-      hover:bg-green-700
+      text-green-700 text-3xl
+      bg-green-200
+      hover:bg-green-300
       rounded-md
       transition-color
       duration-300
     "
     @click="clap"
   >
-    <span v-if="totalCount"
-      >👏 <span class="ml-4">{{ totalCount }}</span></span
-    >
-    <span v-else>👏</span>
+    👏
+    <span v-if="totalCount" class="ml-4">{{ toHumanString(totalCount) }}</span>
   </button>
 </template>
 
 <script>
+const HRNumbers = require('human-readable-numbers')
+
 export default {
   props: {
     id: { type: String, default: '' },
@@ -39,6 +39,7 @@ export default {
     this.fetchClaps()
   },
   methods: {
+    toHumanString: HRNumbers.toHumanString,
     clap() {
       // We have to buffer the additional claps, in the user clicks faster
       //   for an additional clap before the server has a time to process the request
