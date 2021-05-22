@@ -29,8 +29,8 @@ const getClap = async (id) => {
   }
 }
 
-const createClap = async (id) => {
-  const data = { id, count: 1 }
+const createClap = async (id, count) => {
+  const data = { id, count }
   try {
     const response = await client.query(Create(Collection('claps'), { data }))
     return response.data
@@ -39,11 +39,11 @@ const createClap = async (id) => {
   }
 }
 
-const updateClap = async (clap) => {
+const updateClap = async (clap, count) => {
   try {
     const response = await client.query(
       Update(Ref(Collection('claps'), clap.ref), {
-        data: { count: clap.count + 1 },
+        data: { count: clap.count + count },
       })
     )
     return response.data

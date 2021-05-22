@@ -7,7 +7,7 @@ const response = (data, statusCode = 200) => {
 
 // Helper functions to get the ID
 const getPathId = (path) => path.split('/').pop()
-const getBodyId = (body) => JSON.parse(body).id
+const getBody = (body) => JSON.parse(body)
 
 // GET /api/claps/:id
 const get = async (path) => {
@@ -18,11 +18,11 @@ const get = async (path) => {
 
 // POST /api/claps
 const post = async (path, body) => {
-  const id = getBodyId(body)
+  const { id, count } = getBody(body)
   let clap = await getClap(id)
 
-  if (clap) clap = await updateClap(clap)
-  else clap = await createClap(id)
+  if (clap) clap = await updateClap(clap, count)
+  else clap = await createClap(id, count)
 
   return response(clap)
 }

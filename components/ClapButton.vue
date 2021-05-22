@@ -6,17 +6,19 @@
       py-2
       px-4
       font-bold
-      text-white
+      text-white text-3xl
       bg-green-500
       hover:bg-green-700
       rounded-md
       transition-color
       duration-300
     "
-    @click="updateClaps"
+    @click="clap"
   >
-    <span v-if="count">{{ count }} Clap!</span>
-    <span v-else>Clap!</span>
+    <span v-if="count"
+      >👏 <span class="ml-4">{{ totalCount }}</span></span
+    >
+    <span v-else>👏</span>
   </button>
 </template>
 
@@ -26,12 +28,26 @@ export default {
     id: { type: String, default: '' },
   },
   data() {
-    return { count: 0 }
+    return { count: 0, additionalCount: 0, timeout: null }
+  },
+  computed: {
+    totalCount() {
+      return this.count + this.additionalCount
+    },
   },
   created() {
     this.fetchClaps()
   },
   methods: {
+    clap() {
+      // We have to buffer the additional claps, in the user clicks faster
+      //   for an additional clap before the server has a time to process the request
+      this.additionalCount += 1
+      if (this.timeout) clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        this.updateClaps()
+      }, 1000)
+    },
     async fetchClaps() {
       if (this.id) {
         const response = await this.$axios.get(`/api/claps/${this.id}`)
@@ -40,8 +56,12 @@ export default {
     },
     async updateClaps() {
       if (this.id) {
-        const response = await this.$axios.post(`/api/claps`, { id: this.id })
+        const response = await this.$axios.post(`/api/claps`, {
+          id: this.id,
+          count: this.additionalCount,
+        })
         this.count = response.data.count
+        this.additionalCount = 0
       }
     },
   },
