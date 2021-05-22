@@ -19,6 +19,9 @@ const get = async (path) => {
 // POST /api/claps
 const post = async (path, body) => {
   const { id, count } = getBody(body)
+  console.log(body)
+  if (count > 300) return response({ message: 'unauthorized' }, 400)
+
   let clap = await getClap(id)
 
   if (clap) clap = await updateClap(clap, count)

@@ -1,26 +1,42 @@
 <template>
-  <button
-    class="
-      clap-button
-      my-4
-      py-2
-      px-4
-      font-bold
-      text-green-700 text-3xl
-      bg-green-200
-      hover:bg-green-300
-      rounded-md
-      transition-color
-      duration-300
-    "
-    :title="`${totalCount.toLocaleString()} claps`"
-    @click="clap"
-  >
-    👏
-    <span v-if="totalCount" class="ml-4">
-      {{ totalCount.toLocaleString() }}
-    </span>
-  </button>
+  <div class="button-container flex space-x-4">
+    <button
+      class="
+        clap-button
+        my-4
+        py-2
+        px-4
+        font-bold
+        text-green-700 text-3xl
+        bg-green-200
+        hover:bg-green-300
+        rounded-md
+        transition-color
+        duration-300
+      "
+      :title="`${totalCount.toLocaleString()} claps`"
+      @click="clap"
+    >
+      👏
+      <span v-if="totalCount" class="ml-4">
+        {{ totalCount.toLocaleString() }}
+      </span>
+    </button>
+    <button
+      class="
+        refresh-button
+        text-2xl
+        hidden
+        opacity-25
+        hover:opacity-100
+        transition-opacity
+        duration-300
+      "
+      @click="fetchClaps"
+    >
+      🔄
+    </button>
+  </div>
 </template>
 
 <script>
@@ -74,6 +90,9 @@ export default {
 </script>
 
 <style>
+.button-container:hover .refresh-button {
+  display: block;
+}
 .clap-button {
   touch-action: manipulation;
 }
