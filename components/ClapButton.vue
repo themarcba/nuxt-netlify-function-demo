@@ -26,7 +26,7 @@
 </template>
 
 <script>
-const sendEvery = 15
+const sendEvery = 30
 export default {
   props: {
     id: { type: String, default: '' },
