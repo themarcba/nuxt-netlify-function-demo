@@ -13,6 +13,7 @@
       transition-color
       duration-300
     "
+    :title="`${totalCount.toLocaleString()} claps`"
     @click="clap"
   >
     👏
