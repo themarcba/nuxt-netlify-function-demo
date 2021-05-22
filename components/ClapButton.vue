@@ -15,7 +15,7 @@
     "
     @click="clap"
   >
-    <span v-if="count"
+    <span v-if="totalCount"
       >👏 <span class="ml-4">{{ totalCount }}</span></span
     >
     <span v-else>👏</span>
