@@ -32,14 +32,27 @@ const post = async (path, body) => {
 
 const logRequest = (event) => {
   if (event.body) {
-    console.log('👋 =>', event.httpMethod, event.path, event.body)
+    console.log(
+      `👋 (${event.headers['client-ip']}) =>`,
+      event.httpMethod,
+      event.path,
+      event.body
+    )
   } else {
-    console.log('👋 =>', event.httpMethod, event.path)
+    console.log(
+      `👋 (${event.headers['client-ip']}) =>`,
+      event.httpMethod,
+      event.path
+    )
   }
 }
 
 const isValidPOSTRequest = (event) => {
-  return event.headers.referer === process.env.ALLOWED_REFERER
+  const isRefererValid = event.headers.referer === process.env.ALLOWED_REFERER
+  const isClientIPValid = !process.env.BLOCKED_IPS.split(',').includes(
+    event.headers['client-ip']
+  )
+  return isRefererValid && isClientIPValid
 }
 
 exports.handler = async (event, context) => {

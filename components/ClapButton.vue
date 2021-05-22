@@ -64,10 +64,10 @@ export default {
         this.count = response.data.count
       }
     },
-    updateClaps() {
+    async updateClaps() {
       try {
         if (this.id) {
-          this.$axios.post(`/api/claps`, {
+          await this.$axios.post(`/api/claps`, {
             id: this.id,
             count: this.additionalCount,
           })

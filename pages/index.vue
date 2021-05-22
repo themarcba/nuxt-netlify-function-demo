@@ -8,7 +8,7 @@
       Let's see how high we come.
     </p>
 
-    <clap-button id="demo-clap-button-x" />
+    <clap-button id="demo-clap-button" />
     <p class="text-gray-500">
       Made for fun by
       <a
@@ -24,8 +24,5 @@
         GitHub</a
       >.
     </p>
-    <ul>
-      <li><a href="http://"></a></li>
-    </ul>
   </div>
 </template>
