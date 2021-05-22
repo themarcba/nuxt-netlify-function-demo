@@ -73,4 +73,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.clap-button {
+  touch-action: manipulation;
+}
+</style>
