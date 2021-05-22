@@ -25,6 +25,7 @@ const getClap = async (id) => {
     const response = await client.query(Get(Match(Index('claps_by_id'), id)))
     return { ...response.data, ref: response.ref.id.toString() }
   } catch (error) {
+    console.log(error.message)
     return null
   }
 }
@@ -35,6 +36,7 @@ const createClap = async (id, count) => {
     const response = await client.query(Create(Collection('claps'), { data }))
     return response.data
   } catch (error) {
+    console.log(error.message)
     return null
   }
 }
@@ -48,6 +50,7 @@ const updateClap = async (clap, count) => {
     )
     return response.data
   } catch (error) {
+    console.log(error.message)
     return null
   }
 }

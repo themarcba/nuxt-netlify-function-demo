@@ -55,12 +55,16 @@ export default {
       }
     },
     async updateClaps() {
-      if (this.id) {
-        const response = await this.$axios.post(`/api/claps`, {
-          id: this.id,
-          count: this.additionalCount,
-        })
-        this.count = response.data.count
+      try {
+        if (this.id) {
+          const response = await this.$axios.post(`/api/claps`, {
+            id: this.id,
+            count: this.additionalCount,
+          })
+          this.count = response.data.count
+          this.additionalCount = 0
+        }
+      } catch (error) {
         this.additionalCount = 0
       }
     },
