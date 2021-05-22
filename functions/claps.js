@@ -35,8 +35,20 @@ const logRequest = (event) => {
   }
 }
 
+const isValidRequest = (event) => {
+  console.log(
+    '🔎 Checking host:',
+    event.headers.host,
+    'against',
+    process.env.DESIRED_HOST
+  )
+  return event.headers.host === process.env.DESIRED_HOST
+}
+
 exports.handler = async (event, context) => {
   logRequest(event)
+  if (!isValidRequest(event)) return response({ message: 'unauthorized' }, 400)
+
   if (event.httpMethod === 'GET') return get(event.path)
   else if (event.httpMethod === 'POST') return post(event.path, event.body)
 }
