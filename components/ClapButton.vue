@@ -7,15 +7,15 @@
       px-4
       font-bold
       text-white
-      bg-indigo-500
-      hover:bg-indigo-700
+      bg-green-500
+      hover:bg-green-700
       rounded-md
       transition-color
       duration-300
     "
     @click="updateClaps"
   >
-    <span v-if="claps">{{ claps }} Clap!</span>
+    <span v-if="count">{{ count }} Clap!</span>
     <span v-else>Clap!</span>
   </button>
 </template>
@@ -26,7 +26,7 @@ export default {
     id: { type: String, default: '' },
   },
   data() {
-    return { claps: 0 }
+    return { count: 0 }
   },
   created() {
     this.fetchClaps()
@@ -35,15 +35,13 @@ export default {
     async fetchClaps() {
       if (this.id) {
         const response = await this.$axios.get(`/api/claps/${this.id}`)
-        this.claps = response.data.claps
-        console.log(response.data)
+        this.count = response.data.count
       }
     },
     async updateClaps() {
       if (this.id) {
         const response = await this.$axios.post(`/api/claps`, { id: this.id })
-        this.claps = response.data.claps
-        console.log(response.data)
+        this.count = response.data.count
       }
     },
   },

@@ -1,31 +1,42 @@
-const { getClap, createClap, updateClap } = require('../utils/clapHelpers')
+const { getClap, createClap, updateClap } = require('../helpers/db')
 
-const response = ({ data, statusCode = 200 }) => {
-  console.log('<=', data)
+const response = (data, statusCode = 200) => {
+  console.log('🚚 <=', data)
   return { statusCode, body: JSON.stringify(data) }
 }
 
-exports.handler = async (event, context) => {
-  if (event.body) console.log('=>', JSON.parse(event.body))
-  if (event.httpMethod === 'GET') {
-    const id = event.path.split('/').pop()
-    const clap = await getClap(id)
-    if (!clap) return response({ data: { id, claps: 0 }, statusCode: 200 })
-    return response({ data: clap })
-  } else if (event.httpMethod === 'POST') {
-    const id = JSON.parse(event.body).id
-    let clap = await getClap(id)
+// Helper functions to get the ID
+const getPathId = (path) => path.split('/').pop()
+const getBodyId = (body) => JSON.parse(body).id
 
-    if (clap) {
-      console.log('update')
-      // update claps
-      clap = await updateClap(clap)
-      return response({ data: clap })
-    } else {
-      // create claps
-      console.log('create')
-      clap = await createClap({ id, claps: 1 })
-      return response({ data: clap })
-    }
+// GET /api/claps/:id
+const get = async (path) => {
+  const id = getPathId(path)
+  const clap = (await getClap(id)) || { id, count: 0 }
+  return response(clap)
+}
+
+// POST /api/claps
+const post = async (path, body) => {
+  const id = getBodyId(body)
+  let clap = await getClap(id)
+
+  if (clap) clap = await updateClap(clap)
+  else clap = await createClap(id)
+
+  return response(clap)
+}
+
+const logRequest = (event) => {
+  if (event.body) {
+    console.log('👋 =>', event.httpMethod, event.path, event.body)
+  } else {
+    console.log('👋 =>', event.httpMethod, event.path)
   }
+}
+
+exports.handler = async (event, context) => {
+  logRequest(event)
+  if (event.httpMethod === 'GET') return get(event.path)
+  else if (event.httpMethod === 'POST') return post(event.path, event.body)
 }

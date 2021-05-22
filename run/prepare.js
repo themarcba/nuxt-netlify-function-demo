@@ -1,9 +1,9 @@
-const { prepareFaunaFB } = require('../utils/clapHelpers')
+const { prepareFaunaFB } = require('../helpers/db')
 
 const run = async () => {
   console.log('Preparing FaunaDB...')
-  const response = await prepareFaunaFB()
-  console.log(response)
+  await prepareFaunaFB()
+  console.log('Done.')
 }
 
 run()

@@ -1,6 +1,7 @@
 <template>
   <div class="claps m-4">
-    <clap-button id="test-as" />
+    <h1 class="text-3xl font-bold text-green-500">Serverless Clap Button</h1>
+    <clap-button id="test-clap-button7" />
   </div>
 </template>
 
