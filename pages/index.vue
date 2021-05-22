@@ -8,7 +8,7 @@
       Let's see how high we come.
     </p>
 
-    <clap-button id="demo-clap-button" />
+    <clap-button id="demo-clap-button-x" />
     <p class="text-gray-500">
       Made for fun by
       <a

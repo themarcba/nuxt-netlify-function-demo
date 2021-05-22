@@ -22,34 +22,26 @@
         {{ totalCount.toLocaleString() }}
       </span>
     </button>
-    <button
-      class="
-        refresh-button
-        text-2xl
-        hidden
-        opacity-25
-        hover:opacity-100
-        transition-opacity
-        duration-300
-      "
-      @click="fetchClaps"
-    >
-      🔄
-    </button>
   </div>
 </template>
 
 <script>
+const sendEvery = 15
 export default {
   props: {
     id: { type: String, default: '' },
   },
   data() {
-    return { count: 0, additionalCount: 0, timeout: null }
+    return {
+      count: 0,
+      additionalCount: 0,
+      additionalCountProcessed: 0,
+      timeout: null,
+    }
   },
   computed: {
     totalCount() {
-      return this.count + this.additionalCount
+      return this.count + this.additionalCount + this.additionalCountProcessed
     },
   },
   created() {
@@ -64,6 +56,7 @@ export default {
       this.timeout = setTimeout(() => {
         this.updateClaps()
       }, 1000)
+      if (this.additionalCount >= sendEvery) this.updateClaps()
     },
     async fetchClaps() {
       if (this.id) {
@@ -71,14 +64,15 @@ export default {
         this.count = response.data.count
       }
     },
-    async updateClaps() {
+    updateClaps() {
       try {
         if (this.id) {
-          const response = await this.$axios.post(`/api/claps`, {
+          this.$axios.post(`/api/claps`, {
             id: this.id,
             count: this.additionalCount,
           })
-          this.count = response.data.count
+          //   this.count = response.data.count
+          this.additionalCountProcessed += this.additionalCount
           this.additionalCount = 0
         }
       } catch (error) {

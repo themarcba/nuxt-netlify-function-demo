@@ -20,7 +20,7 @@ const get = async (path) => {
 const post = async (path, body) => {
   const { id, count } = getBody(body)
   console.log(body)
-  if (count > 300) return response({ message: 'unauthorized' }, 400)
+  if (count > 15) return response({ message: 'unauthorized' }, 400)
 
   let clap = await getClap(id)
 
