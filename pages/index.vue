@@ -16,10 +16,9 @@
       "
       @click="fetchData"
     >
-      Load data
+      <span v-if="claps">{{ claps }} Clap!</span>
+      <span v-else>Clap!</span>
     </button>
-    <pre v-if="hasData && !isLoading">{{ data }}</pre>
-    <div v-else-if="isLoading">Hold on a second...</div>
   </div>
 </template>
 
@@ -28,7 +27,7 @@ export default {
   data() {
     return {
       data: {},
-      isLoading: false,
+      claps: 0,
     }
   },
   computed: {
