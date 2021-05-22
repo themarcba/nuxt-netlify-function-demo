@@ -1,4 +1,4 @@
-const { prepareFaunaFB } = require('../helpers/db')
+const { prepareFaunaFB } = require('../db/db')
 
 const run = async () => {
   console.log('Preparing FaunaDB...')

@@ -1,4 +1,6 @@
-const { getClap, createClap, updateClap } = require('../helpers/db')
+const mongooseConnect = require('../db/mongoose.connect')
+const Clap = require('../db/models/Clap.model')
+mongooseConnect()
 
 const response = (data, statusCode = 200) => {
   console.log('🚚 <=', data)
@@ -6,31 +8,29 @@ const response = (data, statusCode = 200) => {
 }
 
 // Helper functions to get the ID
-const getPathId = (path) => path.split('/').pop()
-const getBody = (body) => JSON.parse(body)
+const getPathName = path => path.split('/').pop()
+const getBody = body => JSON.parse(body)
 
 // GET /api/claps/:id
-const get = async (path) => {
-  const id = getPathId(path)
-  const clap = (await getClap(id)) || { id, count: 0 }
+const get = async path => {
+  const name = getPathName(path)
+  const clap = await Clap.findOne({ name })
+  console.log(clap)
   return response(clap)
 }
 
 // POST /api/claps
 const post = async (path, body) => {
-  const { id, count } = getBody(body)
-  console.log(body)
+  const { name, count } = getBody(body)
   if (count > 30) return response({ message: 'unauthorized' }, 400)
-
-  let clap = await getClap(id)
-
-  if (clap) clap = await updateClap(clap, count)
-  else clap = await createClap(id, count)
-
+  let clap = await Clap.findOne({ name })
+  if (clap) clap.count += count
+  else clap = new Clap({ name, count })
+  await clap.save()
   return response(clap)
 }
 
-const logRequest = (event) => {
+const logRequest = event => {
   if (event.body) {
     console.log(
       `👋 (${event.headers['client-ip']}) =>`,
@@ -47,7 +47,7 @@ const logRequest = (event) => {
   }
 }
 
-const isValidPOSTRequest = (event) => {
+const isValidPOSTRequest = event => {
   const isRefererValid = event.headers.referer === process.env.ALLOWED_REFERER
   const isClientIPValid = !process.env.BLOCKED_IPS.split(',').includes(
     event.headers['client-ip']

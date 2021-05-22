@@ -29,7 +29,7 @@
 const sendEvery = 30
 export default {
   props: {
-    id: { type: String, default: '' },
+    name: { type: String, default: '' },
   },
   data() {
     return {
@@ -59,16 +59,16 @@ export default {
       if (this.additionalCount >= sendEvery) this.updateClaps()
     },
     async fetchClaps() {
-      if (this.id) {
-        const response = await this.$axios.get(`/api/claps/${this.id}`)
+      if (this.name) {
+        const response = await this.$axios.get(`/api/claps/${this.name}`)
         this.count = response.data.count
       }
     },
     async updateClaps() {
       try {
-        if (this.id) {
+        if (this.name) {
           await this.$axios.post(`/api/claps`, {
-            id: this.id,
+            name: this.name,
             count: this.additionalCount,
           })
           //   this.count = response.data.count
